@@ -15,6 +15,9 @@ channels = []
 current_frame = []
 last_tick = None
 
+# portions of this code was adapted from this SO article but
+# originally used pigpio which I then ported to RPi.GPIO
+# https://raspberrypi.stackexchange.com/questions/104408/how-to-use-rpi-python-to-read-write-convert-to-from-arduino-ppm-and-pwm-servo-c
 def cbf(chpin):
    tick = time.time_ns()
    global start_of_frame, channels, current_frame, last_tick
