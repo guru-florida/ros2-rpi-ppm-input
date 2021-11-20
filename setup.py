@@ -20,7 +20,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'ppm_input = ppm_input:main'
+            'ppm_input = rpi_ppm_input:main'
         ],
     },
 )
