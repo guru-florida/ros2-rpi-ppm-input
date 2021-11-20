@@ -20,8 +20,9 @@ available.
 
 I used this simple resistor and diode circuit to protect my RPi and it is working but I
 make no warranties about it. I got this advice from [tansi.org](https://www.tansi.org/rp/interfacing5v.html)
-who got it off the from someone on the RPi community.
+who got it off the from someone on the RPi community. This circuit reduces the 4v down
+to 4.2 volt which is apparently within the RPi pin input limits.
 
-[5v to 3.3v pin protection circuit](http://url/to/img.png)
+![5v to 3.3v pin protection circuit](rpi-pin-protection.gif)
 
 
