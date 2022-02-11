@@ -1,0 +1,34 @@
+# Default channel settings for R8FM
+# 0 - Roll (right)
+# 1 - Pitch (right)
+# 2 - Throttle (left)
+# 3 - Yaw (left)
+# 4 - Right 3-way
+# 5 - Right button
+# 6 - Left 3-way
+# 7 - Left trim POT
+
+ppm_input:
+    ros__parameters:
+        mode: joy
+        # frame_id: preview
+        # pin: <rpi gpio pin number, defaults to 7>
+        joystick:
+            axis: [0,1,2,3,7]
+            buttons: [4,5,6]
+            3-way: [4,6]
+        axis-0:
+            type: midstick
+            deadband: 30
+        axis-1:
+            type: midstick
+            deadband: 30
+        axis-2:
+            type: throttle
+        axis-3:
+            type: midstick
+            deadband: 30
+        axis-4:
+            type: trim
+
+
