@@ -50,8 +50,26 @@ Buttons are channels mapped to simple integer switch positions 0, 1, 2, ... N wh
 number of poles. Most switches are either 2 or 3 poles (2 or 3 way). By default switches are
 2-way but you can easily specify which buttons are 3-way by listing them in an array '3-way'.
 
+# Default Joystick Configurations
+Look in the `config` directory to see if your transmitter already has a configuration. If not
+you can at least base your configuration on one of the existing params file there. Using the
+standard configs is very easy in a launch file. Just specify the config name (ex. r8fm) as the
+one and only argument.
+
+```python
+    joystick = Node(
+        package="rpi_ppm_input",
+        executable="ppm_input",
+        arguments=["r8fm"],
+        output="screen")
+```
+
+
 # Sample Params File
-This example params.yml is for the R8FM tramsmitter.
+This example params.yml is for the R8FM tramsmitter. Using standard configurations is recommended
+but if you create your own for your transmitter please consider including it by submitting a PR
+or create an Issue with the config pasted in the body.
+
 ```yaml
 # Default channel settings for R8FM
 # 0 - Roll (right)
