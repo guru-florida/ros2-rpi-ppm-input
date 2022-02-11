@@ -2,12 +2,14 @@
 
 import time
 import os
+import sys
 import typing
 import RPi.GPIO as GPIO
 
 import rclpy
 from rclpy.node import Node
 from rclpy.parameter import Parameter
+from ament_index_python.packages import get_package_share_directory
 from std_msgs.msg import Int16MultiArray
 from sensor_msgs.msg import Joy
 
@@ -266,7 +268,35 @@ class PPMNode(Node):
         GPIO.add_event_callback(self.pin, cbf)
 
 
-def main(args=None):
+def find_config_file(root_path: str, config_name: str):
+    config_path_search = [get_package_share_directory('rpi_ppm_input')]
+    for path_prefix in config_path_search:
+        config_file = os.path.realpath(os.path.join(root_path, path_prefix, 'config', config_name+'.yaml'))
+        if os.path.isfile(config_file):
+            print('using config at ' + config_file)
+            return config_file
+    print(f'Cannot find {config_name} in paths:  ' + '  '.join(config_path_search))
+    exit(-2)
+
+
+def main(args=sys.argv):
+    args_without_ros = rclpy.utilities.remove_ros_args(args)
+    if len(args_without_ros) > 1:
+        # attempt to load a params file given by the name of the first argument
+        config_name = args_without_ros[1]
+        try:
+            # assume we've been given a config and try to find it
+            # this may depend on if we are installed already, or running from source
+            bin_path = os.path.dirname(os.path.realpath(args_without_ros[0]))
+            params_file = find_config_file(bin_path, config_name)
+            if '--ros-args' not in args:
+                args.append('--ros-args')
+            args.extend(['--params-file', params_file])
+        except Exception as e:
+            print(f'unable to resolve config {config_name}')
+            pass
+
+
     rclpy.init(args=args)
 
     node = PPMNode()
