@@ -14,9 +14,13 @@ ppm_input:
         # frame_id: preview
         # pin: <rpi gpio pin number, defaults to 7>
         joystick:
+            # indexes channel IDs in the received PPM frame
             axis: [0,1,2,3,7]
             buttons: [4,5,6]
+            # indicate some buttons are 3-way (have 3 poles)
             3-way: [4,6]
+
+        # per-axis configuration
         axis-0:
             type: midstick
             deadband: 30
