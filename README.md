@@ -13,6 +13,37 @@ for robots.
   this node reads.
 
 
+# Raw PPM mode
+
+By default this node will publish Int16MultiArray messages (array of 16bit ints) to the
+/input/ppm topic. Each frame of PPM data will publish a new message and the size of the
+message int array will match the number of channels read in the last PPM frame. This means
+the number of elements in the array may change.
+
+# Joystick mode
+
+If 'mode' parameter is set to 'joy' then this node will publish as sensor_msgs/Joy. This
+requires PPM channels are mapped to axes and buttons.
+
+### Axes
+The axis will be map PPM values of 1000 to 2000 to float ranges -1.0 to +1.0 but how these
+are mapped exactly depends on the axis type. You can specify per-axis parameters using the
+parameter namespace axis-# with sub-parameters of type, deadband, center, zero_point and
+min_throttle. All axis numeric parameters are in PPM raw units (i.e. between 1000-2000)
+
+#### type=midstick
+This is your typical axis that snaps to center and will map to -1.0 to 1.0. You can optionally
+provide a deadband (in PPM int counts, such as 30)
+
+#### type=throttle
+This mode acts like a throttle where full down is 0.0, there is some safety margin (zero_point=1200)
+before throttle is activated (outputs non-zero) and the first throttle value starts at a
+minimum amount of power (min_throttle=0).
+
+#### type=trim
+This axis assumes a trim pot and has a linear output of 0.0 to 1.0.
+
+
 # Raspberry PI 3.3v GPIO
 *The RPi pins are NOT 5v tolerant!* Most RC transmitters will output 5v TTL level. So be
 sure to protect your RPi inputs with a 5v to 3.3v level converter. There are many options
