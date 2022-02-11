@@ -120,4 +120,7 @@ to 4.2 volt which is apparently within the RPi pin input limits.
 
 ![5v to 3.3v pin protection circuit](rpi-pin-protection.gif)
 
+# Joystick Remapper (Related software)
+Although this node already supports remapping of axis and buttons you may also want to look
+ at the [joystick remapper](http://wiki.ros.org/joystick_remapper) node which has similar features. 
 
