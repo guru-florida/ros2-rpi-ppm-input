@@ -241,20 +241,24 @@ class PPMNode(Node):
         self.ppm_publisher_.publish(msg)
 
     def publish_ppm_joy(self):
-        if len(channels) < self.highest_channel:
-            self.get_logger().warn(f'channel framing error, got {len(channels)} channels, require {self.highest_channel}')
-        msg = Joy()
-        msg.header.stamp = self.get_clock().now().to_msg()
-        msg.header.frame_id = self.frame_id
-        for ax in self.axis:
-            ch = self.channels[ax]
-            v = channels[ax]
-            msg.axes.append(ch.map(v))
-        for b in self.buttons:
-            ch = self.channels[b]
-            v = channels[b]
-            msg.buttons.append(ch.map(v))
-        self.ppm_publisher_.publish(msg)
+        _channels = channels      # copy ref in case interrupt occurs
+        if len(_channels) <= self.highest_channel:
+            self.get_logger().warn(f'channel framing error, got {len(_channels)} channels, require {self.highest_channel+1}')
+        try:
+            msg = Joy()
+            msg.header.stamp = self.get_clock().now().to_msg()
+            msg.header.frame_id = self.frame_id
+            for ax in self.axis:
+                ch = self.channels[ax]
+                v = _channels[ax]
+                msg.axes.append(ch.map(v))
+            for b in self.buttons:
+                ch = self.channels[b]
+                v = _channels[b]
+                msg.buttons.append(ch.map(v))
+            self.ppm_publisher_.publish(msg)
+        except Exception as e:
+            print('failed to publish: ' + str(e))
 
     def setup_gpio(self):
         # set GPIO pins to be compatible with the RPi header (all boards)
